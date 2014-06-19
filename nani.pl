@@ -28,7 +28,6 @@ turned_off(flashlight).
 here(kitchen).
 
 check_location :-
-	room(Room),
-	location(_, FalseRoom),
-	Room \= FalseRoom,
-	write(Room),write(FalseRoom).
+	location(_, MaybeRoom),
+	not(room(MaybeRoom)),
+	format('Error: ~w is not a room!', [MaybeRoom]).
