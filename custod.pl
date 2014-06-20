@@ -1,10 +1,12 @@
-custom(tom,toronto,aaa).
-custom(nancy,newcastle,bbb).
-custom(bernd,berlin,aaa).
-custom(pierre,paris,ccc).
-custom(mishka,moscow,bbb).
-custom(sven,stockholm,aaa).
+customer(tom,toronto,aaa).
+customer(nancy,newcastle,bbb).
+customer(bernd,berlin,aaa).
+customer(pierre,paris,ccc).
+customer(mishka,moscow,bbb).
+customer(sven,stockholm,aaa).
 
+
+% item(id,name,when-to-rebuy)
 item(p1,lotr,10).
 item(p2,lotf,10).
 item(p3,ulyssis,0).
@@ -16,3 +18,5 @@ inventory(p2,24).
 inventory(p3,3).
 inventory(p4,2).
 inventory(p5,23).
+
+get_inventory(Name) :- item(Id,Name,_),inventory(Id, Amount), write(Amount).
