@@ -56,7 +56,22 @@ look :-
 	list_things(Place),
 	write('You can go to:'), nl,
 	list_connections(Place).
+
+is_room(MaybeRoom) :-
+	room(MaybeRoom).
+is_room(MaybeRoom) :-
+	not(room(MaybeRoom)),
+	format('Error: ~w is not a room!~n', [MaybeRoom]).
+
 check_location :-
 	location(_, MaybeRoom),
-	not(room(MaybeRoom)),
-	format('Error: ~w is not a room!', [MaybeRoom]).
+	is_room(MaybeRoom),
+	fail.
+check_location.
+
+check_door :-
+	door(MaybeRoom1, MaybeRoom2),
+	is_room(MaybeRoom1),
+	is_room(MaybeRoom2),
+	fail.
+check_door.
