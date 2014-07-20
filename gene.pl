@@ -32,3 +32,8 @@ uncleOf(X,Y) :- parent(P,X),brotherOf(P,Y).
 auntOf(X,Y) :- parent(P,X),sisterOf(P,Y).
 
 cousinOf(X,Y) :- parent(P,X),sibling(P,S),parent(S,Y).
+
+spouse(homer,marge).
+
+married(X,Y) :- spouse(X,Y).
+married(X,Y) :- spouse(Y,X).
