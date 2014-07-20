@@ -28,8 +28,15 @@ sibling(X,Y) :- parent(P,X),parent(P,Y), X \= Y.
 brotherOf(X, Y) :- sibling(X,Y), male(Y).
 sisterOf(X, Y) :- sibling(X,Y), female(Y).
 
+% uncle by blood
 uncleOf(X,Y) :- parent(P,X),brotherOf(P,Y).
+% uncle in law
+uncleOf(X,Y) :- parent(P,X),sisterOf(P,S),married(S,Y).
+
+% aunt by blood
 auntOf(X,Y) :- parent(P,X),sisterOf(P,Y).
+% aunt in law
+auntOf(X,Y) :- parent(P,X),brotherOf(P,B),married(B,Y).
 
 cousinOf(X,Y) :- parent(P,X),sibling(P,S),parent(S,Y).
 
