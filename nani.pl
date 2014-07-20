@@ -57,6 +57,9 @@ look :-
 	write('You can go to:'), nl,
 	list_connections(Place).
 
+look_in(Place) :-
+	list_things(Place).
+
 is_room(MaybeRoom) :-
 	room(MaybeRoom).
 is_room(MaybeRoom) :-
