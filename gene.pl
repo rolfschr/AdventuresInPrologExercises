@@ -22,6 +22,7 @@ fatherOf(X) :- parent(F, X), male(F), write(F).
 
 grandmotherOf(X) :- parent(P, X), motherOf(P).
 grandfatherOf(X) :- parent(P, X), fatherOf(P).
+grandparent(Child, Parent) :- parent(Q,Child), parent(Parent,Q).
 
 sibling(X,Y) :- parent(P,X),parent(P,Y), X \= Y.
 
