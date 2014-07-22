@@ -14,7 +14,7 @@ item(p3,ulyssis,0).
 item(p4,great_expecations,10).
 item(p5,lionking,5).
 
-inventory(p1,32).
+inventory(p1,5).
 inventory(p2,24).
 inventory(p3,3).
 inventory(p4,2).
@@ -51,3 +51,18 @@ valid_order(Customer, ItemId, QuantityWanted) :-
 	QuantityInStock >= QuantityWanted,
 	!.
 
+reorder(Name) :-
+	item(ItemId, Name, _),
+	!,
+	reorder(ItemId).
+
+reorder(ItemId) :-
+	item(ItemId, Name, ReorderQuantity),
+	inventory(ItemId, QuantityInStock),
+	QuantityInStock < ReorderQuantity,
+	!,
+	format('Need to reorder ~w(~w).', [Name, ItemId]), nl.
+
+reorder(ItemId) :-
+	item(ItemId, Name, _),
+	format('There is enough of ~w(~w) in stock.', [Name, ItemId]), nl.
