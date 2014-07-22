@@ -38,3 +38,16 @@ good_customer(X) :- customer(X,_,Rating), good_rating(Rating).
 
 good_rating(Rating) :- atom_chars(Rating, [H|_]), H = a.
 good_rating(Rating) :- atom_chars(Rating, [H|_]), H = b.
+
+valid_order(Customer, ItemName, Quantity) :-
+	item(ItemId, ItemName, _),
+	!, % why here?
+	valid_order(Customer, ItemId, Quantity).
+
+valid_order(Customer, ItemId, QuantityWanted) :-
+	customer(Customer, _, _),
+	good_customer(Customer),
+	inventory(ItemId, QuantityInStock),
+	QuantityInStock >= QuantityWanted,
+	!.
+
