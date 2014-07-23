@@ -1,9 +1,12 @@
+%%% DATA BEGIN %%%
+
 room(kitchen).
 room(office).
 room(hall).
 room('dining room').
 room(cellar).
 
+:- dynamic location/2.
 location(desk, office).
 location(apple, kitchen).
 location(flashlight, desk).
@@ -19,19 +22,68 @@ door(hall, 'dining room').
 door(kitchen, cellar).
 door('dining room', kitchen).
 
+connect(X,Y) :- door(X,Y).
+connect(X,Y) :- door(Y,X).
+
 edible(apple).
 edible(crackers).
 
 tastes_yucky(broccoli).
 
 turned_off(flashlight).
+
+:- dynamic here/1.
 here(kitchen).
+
+%%% DATA END %%%
+
+%%% MOVE BEGIN %%%
+
+goto(Place):-
+	can_go(Place),
+	move(Place),
+	look,
+	true.
+	%!.
+
+can_go(Place):-
+	here(X),
+	connect(X, Place).
+can_go(_):-
+	format('You can''t get there from here.'), nl,
+	fail.
+
+move(Place):-
+	retract(here(_)),
+	asserta(here(Place)).
+
+%%% MOVE END %%%
+
+%%% TAKE BEGIN %%%
+
+take(X):-
+	can_take(X),
+	take_object(X).
+
+can_take(Thing) :-
+	here(Place),
+	location(Thing, Place).
+can_take(Thing) :-
+	format('There is no ~w here.', [Thing]),
+	nl, fail.
+
+take_object(X):-
+	retract(location(X,_)),
+	asserta(have(X)),
+	format('taken'), nl.
+
+%%% TAKE END %%%
+
+%%% ASK BEGIN %%%
 
 where_food(X,Y) :-  location(X,Y), edible(X).
 where_food(X,Y) :-  location(X,Y), tastes_yucky(X).
 
-connect(X,Y) :- door(X,Y).
-connect(X,Y) :- door(Y,X).
 
 list_things(Place) :-
 	location(X, Place),
@@ -60,6 +112,10 @@ look :-
 look_in(Place) :-
 	list_things(Place).
 
+%%% ASK END %%%
+
+%%% TESTS BEGIN %%%
+
 is_room(MaybeRoom) :-
 	room(MaybeRoom).
 is_room(MaybeRoom) :-
@@ -78,3 +134,5 @@ check_door :-
 	is_room(MaybeRoom2),
 	fail.
 check_door.
+
+%%% TESTS END %%%
