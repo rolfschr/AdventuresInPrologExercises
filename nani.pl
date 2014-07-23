@@ -59,7 +59,7 @@ move(Place):-
 
 %%% MOVE END %%%
 
-%%% TAKE BEGIN %%%
+%%% TAKE/PUT BEGIN %%%
 
 take(X):-
 	can_take(X),
@@ -77,7 +77,24 @@ take_object(X):-
 	asserta(have(X)),
 	format('taken'), nl.
 
-%%% TAKE END %%%
+put(X) :-
+	can_put(X),
+	put_object(X).
+
+can_put(Thing) :-
+	have(Thing).
+can_put(Thing) :-
+	format('You do not have ~w!', [Thing]),
+	nl, fail.
+
+put_object(X) :-
+	here(Place),
+	asserta(location(X,Place)),
+	retract(have(X)),
+	format('Put.'), nl.
+
+
+%%% TAKE/PUT END %%%
 
 %%% ASK BEGIN %%%
 
