@@ -152,4 +152,14 @@ check_door :-
 	fail.
 check_door.
 
+check_put :-
+	asserta(here(randomPlace)),
+	asserta(have(randomThing)),
+	put(randomThing),
+	not(have(randomThing)),
+	location(randomThing, randomPlace),
+	retract(here(randomPlace)),
+	retract(location(randomThing, randomPlace)),
+	true.
+
 %%% TESTS END %%%
