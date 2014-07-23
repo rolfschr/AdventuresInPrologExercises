@@ -133,6 +133,12 @@ look_in(Place) :-
 
 %%% TESTS BEGIN %%%
 
+check_all :-
+	check_door,
+	check_location,
+	check_put,
+	true.
+
 is_room(MaybeRoom) :-
 	room(MaybeRoom).
 is_room(MaybeRoom) :-
