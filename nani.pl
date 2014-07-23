@@ -59,7 +59,7 @@ move(Place):-
 
 %%% MOVE END %%%
 
-%%% TAKE/PUT BEGIN %%%
+%%% OBJECT MANIP BEGIN %%%
 
 take(X):-
 	can_take(X),
@@ -93,8 +93,14 @@ put_object(X) :-
 	retract(have(X)),
 	format('Put.'), nl.
 
+inventory :-
+	format('You have:~n'),
+	have(Thing),
+	format('~2|~s~n', [Thing]),
+	fail.
+inventory.
 
-%%% TAKE/PUT END %%%
+%%% OBJECT MANIP END %%%
 
 %%% ASK BEGIN %%%
 
