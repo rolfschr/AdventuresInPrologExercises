@@ -30,10 +30,14 @@ edible(crackers).
 
 tastes_yucky(broccoli).
 
+:- dynamic turned_on/1.
+:- dynamic turned_off/1.
 turned_off(flashlight).
 
 :- dynamic here/1.
 here(kitchen).
+
+:- dynamic have/1.
 
 %%% DATA END %%%
 
@@ -99,6 +103,31 @@ inventory :-
 	format('~2|~s~n', [Thing]),
 	fail.
 inventory.
+
+turn_on(X) :-
+	can_turn_on(X),
+	asserta(turned_on(X)),
+	retract(turned_off(X)).
+
+can_turn_on(X) :-
+	have(X),
+	turned_off(X).
+can_turn_on(X) :-
+	format('You cannot turn on ~s.~n', [X]),
+	fail.
+
+turn_off(X) :-
+	can_turn_off(X),
+	asserta(turned_off(X)),
+	retract(turned_on(X)).
+
+can_turn_off(X) :-
+	not(can_turn_on(X)),
+	have(X),
+	turned_on(X).
+can_turn_off(X) :-
+	format('You cannot turn off ~s.~n', [X]),
+	fail.
 
 %%% OBJECT MANIP END %%%
 
