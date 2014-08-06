@@ -146,10 +146,8 @@ list_things(Place) :-
 list_things(_).
 
 list_connections(Place) :-
-	connect(Place, X),
-	tab(2),
-	write(X),
-	nl,
+	connect(Place, X, _),
+	format('~2|~w ~n', X),
 	fail.
 list_connections(_).
 
@@ -158,7 +156,7 @@ look :-
 	write('You are in the '), write(Place), nl,
 	write('You can see:'), nl,
 	list_things(Place),
-	write('You can go to:'), nl,
+	write('Neighbouring rooms:'), nl,
 	list_connections(Place).
 
 look_in(Place) :-
