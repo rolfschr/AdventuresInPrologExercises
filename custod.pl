@@ -14,11 +14,34 @@ item(p3,ulyssis,0).
 item(p4,great_expecations,10).
 item(p5,lionking,5).
 
+%%% INVENTORY BEGIN %%%
+
+% inventory(id,quantity)
+:- dynamic inventory/2.
 inventory(p1,5).
 inventory(p2,24).
 inventory(p3,3).
 inventory(p4,2).
 inventory(p5,23).
+
+% update_inventory(id,delta)
+update_inventory(Id, Delta) :-
+	inventory(Id, CurrentQuantity),
+	NewQuantity is CurrentQuantity + Delta,
+	NewQuantity >= 0,
+	retract(inventory(Id, CurrentQuantity)),
+	asserta(inventory(Id, NewQuantity)),
+	!.
+update_inventory(Id, Delta) :-
+	item(Id, Name, _),
+	inventory(Id, CurrentQuantity),
+	CurrentQuantity + Delta < 0,
+	format('Not enough ~w (~w) in stock.~n', [Name, Id]),
+	!,
+	fail.
+update_inventory(Name, Delta) :-
+	item(Id, Name, _),
+	update_inventory(Id, Delta).
 
 get_inventory(Name) :- item(Id,Name,_),inventory(Id, Amount), write(Amount).
 
@@ -33,6 +56,9 @@ list_inventory :-
 	nl,
 	fail.
 list_inventory.
+
+%%% INVENTORY END %%%
+
 
 good_customer(X) :- customer(X,_,Rating), good_rating(Rating).
 
