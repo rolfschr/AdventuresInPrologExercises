@@ -68,7 +68,7 @@ list_inventory.
 %%% INVENTORY END %%%
 
 
-%%% ORDERS END %%%
+%%% ORDERS BEGIN %%%
 
 valid_order(Customer, ItemName, Quantity) :-
 	item(ItemId, ItemName, _),
@@ -82,20 +82,18 @@ valid_order(Customer, ItemId, QuantityWanted) :-
 	QuantityInStock >= QuantityWanted,
 	!.
 
-reorder(Name) :-
-	item(ItemId, Name, _),
-	!,
-	reorder(ItemId).
-
 reorder(ItemId) :-
 	item(ItemId, Name, ReorderQuantity),
 	inventory(ItemId, QuantityInStock),
 	QuantityInStock < ReorderQuantity,
-	!,
-	format('Need to reorder ~w(~w).', [Name, ItemId]), nl.
-
+	format('Need to reorder ~w(~w).~n', [Name, ItemId]),
+	!.
 reorder(ItemId) :-
 	item(ItemId, Name, _),
-	format('There is enough of ~w(~w) in stock.', [Name, ItemId]), nl.
+	format('There is enough of ~w(~w) in stock.~n', [Name, ItemId]),
+	!.
+reorder(Name) :-
+	item(ItemId, Name, _),
+	reorder(ItemId).
 
 %%% ORDERS END %%%
