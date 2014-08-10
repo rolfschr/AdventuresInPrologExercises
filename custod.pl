@@ -1,4 +1,6 @@
-% name, city, credit-rating
+%%% CUSTOMER BEGIN %%%
+
+% customer(name,city,credit-rating)
 customer(tom,toronto,aaa).
 customer(nancy,newcastle,bbb).
 customer(bernd,berlin,aaa).
@@ -6,6 +8,12 @@ customer(pierre,paris,ccc).
 customer(mishka,moscow,bbb).
 customer(sven,stockholm,aaa).
 
+good_customer(X) :- customer(X,_,Rating), good_rating(Rating).
+
+good_rating(Rating) :- atom_chars(Rating, [H|_]), H = a.
+good_rating(Rating) :- atom_chars(Rating, [H|_]), H = b.
+
+%%% CUSTOMER END %%%
 
 % item(id,name,when-to-rebuy)
 item(p1,lotr,10).
@@ -60,10 +68,7 @@ list_inventory.
 %%% INVENTORY END %%%
 
 
-good_customer(X) :- customer(X,_,Rating), good_rating(Rating).
-
-good_rating(Rating) :- atom_chars(Rating, [H|_]), H = a.
-good_rating(Rating) :- atom_chars(Rating, [H|_]), H = b.
+%%% ORDERS END %%%
 
 valid_order(Customer, ItemName, Quantity) :-
 	item(ItemId, ItemName, _),
@@ -92,3 +97,5 @@ reorder(ItemId) :-
 reorder(ItemId) :-
 	item(ItemId, Name, _),
 	format('There is enough of ~w(~w) in stock.', [Name, ItemId]), nl.
+
+%%% ORDERS END %%%
