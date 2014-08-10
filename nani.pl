@@ -16,14 +16,28 @@ location(broccoli, kitchen).
 location(crackers, kitchen).
 location(computer, office).
 
-door(office, hall).
-door(kitchen, office).
-door(hall, 'dining room').
-door(kitchen, cellar).
-door('dining room', kitchen).
+:- dynamic door/3.
+% door(From, To, IsOpen)
+door(office, hall, true).
+door(kitchen, office, true).
+door(hall, 'dining room', true).
+door(kitchen, cellar, false).
+door('dining room', kitchen, true).
 
-connect(X,Y) :- door(X,Y).
-connect(X,Y) :- door(Y,X).
+connect(X, Y, door(X, Y, IsOpen)) :- door(X, Y, IsOpen).
+connect(X, Y, door(Y, X, IsOpen)) :- door(Y, X, IsOpen).
+connect(X, Y) :- connect(X, Y, _).
+
+%:- dynamic is_open/1.
+%is_open(door(office, hall)) :- true.
+%is_open(door(kitchen, office)) :- true.
+%is_open(door(hall, 'dining room')) :- false.
+%is_open(door(kitchen, cellar)) :- false.
+%is_open(door('dining room', kitchen)) :- false.
+%
+%is_open(Here, Next) :- is_open(door(Here, Next)).
+%is_open(Here, Next) :- is_open(door(Next, Here)).
+%is_closed(Here, Place) :- not(is_open(Here, Place)).
 
 edible(apple).
 edible(crackers).
@@ -52,10 +66,43 @@ goto(Place):-
 
 can_go(Place):-
 	here(X),
-	connect(X, Place).
-can_go(_):-
-	format('You can''t get there from here.'), nl,
+	connect(X, Place, door(_, _, true)).
+can_go(Place):-
+	not(room(Place)),
+	format('~w is not a room.~n', [Place]),
+	!,
 	fail.
+can_go(Place):-
+	here(X),
+	not(connect(X, Place, _)),
+	format('There is no door to the ~w.~n', [Place]),
+	!,
+	fail.
+can_go(Place):-
+	here(X),
+	connect(X, Place, door(_, _, false)),
+	format('The door to ~w is not open.~n', [Place]),
+	!,
+	fail.
+
+open_door_to(Place):-
+	here(X),
+	connect(Place, X, door(_, _, true)),
+	true.
+open_door_to(Place):-
+	here(X),
+	connect(Place, X, door(From, To, false)),
+	retract(door(From, To, false)),
+	asserta(door(From, To, true)).
+
+close_door_to(Place):-
+	here(X),
+	connect(Place, X, door(_, _, false)).
+close_door_to(Place):-
+	here(X),
+	connect(Place, X, door(_, _, true)),
+	retract(door(From, To, true)),
+	asserta(door(From, To, false)).
 
 move(Place):-
 	retract(here(_)),
@@ -146,8 +193,8 @@ list_things(Place) :-
 list_things(_).
 
 list_connections(Place) :-
-	connect(Place, X, _),
-	format('~2|~w ~n', X),
+	connect(Place, X),
+	format('~2|~w ~n', [X]),
 	fail.
 list_connections(_).
 
