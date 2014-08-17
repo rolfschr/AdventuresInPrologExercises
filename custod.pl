@@ -33,7 +33,8 @@ inventory(p3, 3).
 inventory(p4, 2).
 inventory(p5, 23).
 
-% update_inventory(ItemId, Detla))
+
+% update_inventory(ItemId, Delta))
 update_inventory(ItemId, Delta):-
 	inventory(ItemId, CurrentAmount),
 	NewAmount is CurrentAmount + Delta,
