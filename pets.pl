@@ -1,7 +1,7 @@
 
 pet(dog):- size(medium), noise(woof).
 pet(cat):- size(medium), noise(meow).
-pet(mouse):- size(mall), noise(squeak).
+pet(mouse):- size(small), noise(squeak).
 
 size(X):- ask(size, X).
 noise(X):- ask(noise, X).
