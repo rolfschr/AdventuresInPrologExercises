@@ -73,6 +73,17 @@ list_inventory.
 % order(CustomerName, ItemId, QuantityWanted)
 :- dynamic order/3.
 
+order:-
+	format('Customer name: '), read(CustomerName),
+	(customer(CustomerName, _, _) -> true; format('Customer doesn\'t exist!~n'), false),
+	(good_customer(CustomerName) -> true; format('Customer is not a good customer!~n'), false),
+	format('Item name: '), read(ItemName),
+	(item(ItemId, ItemName, _) -> true; format('This item doesn\t exist!~n'), false),
+	format('How much? '), read(QuantityWanted),
+	update_inventory(ItemId, -QuantityWanted),
+	assertz(order(CustomerName, ItemId, QuantityWanted)),
+	reorder(ItemId).
+
 valid_order(Customer, ItemName, Amount):-
 	item(ItemId, ItemName, _),
 	!, % why here?
