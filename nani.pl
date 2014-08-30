@@ -120,7 +120,7 @@ take(X):-
 
 can_take(Thing) :-
 	here(Place),
-	location(Thing, Place).
+	is_contained_in(Thing, Place).
 can_take(Thing) :-
 	format('There is no ~w here.', [Thing]),
 	nl, fail.
