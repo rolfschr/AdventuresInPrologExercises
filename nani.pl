@@ -211,6 +211,14 @@ look :-
 look_in(Place) :-
 	list_things(Place).
 
+is_contained_in(T1,T2) :-
+	location(T1,T2).
+is_contained_in(T1,T2) :-
+	location(X,T2),
+	is_contained_in(T1,X).
+
+
+
 %%% ASK END %%%
 
 %%% TESTS BEGIN %%%
