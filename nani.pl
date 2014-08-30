@@ -64,8 +64,7 @@ goto(Place):-
 	can_go(Place),
 	move(Place),
 	look,
-	true.
-	%!.
+	!.
 
 can_go(Place):-
 	here(X),
