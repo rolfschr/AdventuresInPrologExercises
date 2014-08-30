@@ -44,5 +44,20 @@ cousinOf(X,Y) :- parent(P,X),sibling(P,S),parent(S,Y).
 
 spouse(homer,marge).
 
+
 married(X,Y) :- spouse(X,Y).
 married(X,Y) :- spouse(Y,X).
+
+% it's efficient to ask: give_desc_get_ance(bart, X)
+give_desc_get_ance(D, A) :-
+	parent(A, D).
+give_desc_get_ance(D, A) :-
+	parent(DirectAncestor, D),
+	give_desc_get_ance(DirectAncestor, A).
+
+% it's efficient to ask: give_ance_get_desc(grandpa, X)
+give_ance_get_desc(A, D) :-
+	parent(A, D).
+give_ance_get_desc(A, D) :-
+	parent(A, DirectDescendant),
+	give_ance_get_desc(DirectDescendant, D).
