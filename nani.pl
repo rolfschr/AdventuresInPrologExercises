@@ -15,6 +15,9 @@ location(nani, 'washing machine').
 location(broccoli, kitchen).
 location(crackers, kitchen).
 location(computer, office).
+location(envelope, desk).
+location(stamp, envelope).
+location(key, envelope).
 
 :- dynamic door/3.
 % door(From, To, IsOpen)
