@@ -245,9 +245,6 @@ look :-
 	write('Neighbouring rooms:'), nl,
 	list_connections(Place).
 
-look_in(Place) :-
-	list_things(Place).
-
 is_contained_in(T1,T2) :-
 	location(T1,T2).
 is_contained_in(T1,T2) :-
