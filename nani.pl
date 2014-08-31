@@ -217,9 +217,7 @@ where_food(X,Y) :-  location(X,Y), tastes_yucky(X).
 
 list_things(Place) :-
 	location(X, Place),
-	tab(2),
-	format('~w', [X]),
-	nl,
+	format('~2|~w~n', [X]),
 	fail.
 list_things(_).
 
