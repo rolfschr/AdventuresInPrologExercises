@@ -223,9 +223,13 @@ list_things(_).
 
 list_things_s(Place) :-
 	location_s(object(Thing, Color, Size, Weight),Place),
-	format('~2|A ~w, ~w ~w weighing ~w pounds~n', [Size, Color, Thing, Weight]),
+	plural_s(Weight, PluralS),
+	format('~2|A ~w, ~w ~w weighing ~w pound~w~n', [Size, Color, Thing, Weight, PluralS]),
 	fail.
 list_things_s(_).
+
+plural_s(1, '').
+plural_s(Quantity, 's') :- Quantity > 1.
 
 list_connections(Place) :-
 	connect(Place, X),
