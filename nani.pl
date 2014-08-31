@@ -126,7 +126,7 @@ take(X):-
 
 take_s(X):-
 	can_take_s(X),
-	take_object(X).
+	take_object_s(X).
 
 can_take(Thing) :-
 	here(Place),
@@ -137,15 +137,29 @@ can_take(Thing) :-
 
 can_take_s(Thing) :-
 	here(Room),
-	location_s(object(Thing, _, small,_), Room).
+	format('asdf~w', [Room]),
+	location_s(object(Thing, _, small,_), Room),
+	format('Asdf~w', [Room]).
 can_take_s(Thing) :-
+	here(Room),
+	location_s(object(Thing, _, big, _), Room),
 	format('~w is too big.~n', [Thing]),
+	fail.
+can_take_s(Thing) :-
+	here(Room),
+	not(location_s(object(Thing, _, _, _), Room)),
+	format('There is no ~w here.~n', [Thing]),
 	fail.
 
 take_object(X):-
 	retract(location(X,_)),
 	asserta(have(X)),
 	format('taken'), nl.
+
+take_object_s(X):-
+	retract(location_s(object(X, Color, Size, Weight), _)),
+	asserta(have(object(X, Color, Size, Weight))),
+	format('Taken~n.').
 
 put(X) :-
 	can_put(X),
