@@ -24,3 +24,7 @@ last([_|T], X) :-
 len([], 0).
 len([_|T], Y) :-
 	length(T, X), Y is X + 1.
+
+respond([]).
+respond([H|T]) :-
+	format('~w', H), respond(T).
