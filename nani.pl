@@ -223,6 +223,12 @@ list_things(Place) :-
 	fail.
 list_things(_).
 
+list_things_s(Place) :-
+	location_s(object(Thing, Color, Size, Weight),Place),
+	format('~2|A ~w, ~w ~w weighing ~w pounds~n', [Size, Color, Thing, Weight]),
+	fail.
+list_things_s(_).
+
 list_connections(Place) :-
 	connect(Place, X),
 	format('~2|~w ~n', [X]),
