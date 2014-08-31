@@ -152,12 +152,12 @@ can_take_s(Thing) :-
 take_object(X):-
 	retract(location(X,_)),
 	asserta(have(X)),
-	format('Taken~n').
+	format('Taken.~n').
 
 take_object_s(X):-
 	retract(location_s(object(X, Color, Size, Weight), _)),
 	asserta(have(object(X, Color, Size, Weight))),
-	format('Taken~n.').
+	format('Taken.~n').
 
 put(X) :-
 	can_put(X),
