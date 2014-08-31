@@ -166,8 +166,8 @@ put(X) :-
 can_put(Thing) :-
 	have(Thing).
 can_put(Thing) :-
-	format('You do not have ~w!', [Thing]),
-	nl, fail.
+	format('You do not have ~w!~n', [Thing]),
+	fail.
 
 put_object(X) :-
 	here(Place),
@@ -175,10 +175,26 @@ put_object(X) :-
 	retract(have(X)),
 	format('Put.'), nl.
 
+put_s(X) :-
+	can_put_s(X),
+	put_object_s(X).
+
+can_put_s(Thing) :-
+	have(object(Thing, _, _, _)).
+can_put_s(Thing) :-
+	format('You do not have ~w!~n', [Thing]),
+	fail.
+
+put_object_s(X) :-
+	here(Place),
+	asserta(location(object(X, A, B, C), Place)),
+	retract(have(object(X, A, B, C))),
+	format('Put.~n').
+
 inventory :-
 	format('You have:~n'),
 	have(Thing),
-	format('~2|~s~n', [Thing]),
+	format('~2|~w~n', [Thing]),
 	fail.
 inventory.
 
@@ -242,6 +258,7 @@ look :-
 	write('You are in the '), write(Place), nl,
 	write('You can see:'), nl,
 	list_things(Place),
+	list_things_s(Place),
 	write('Neighbouring rooms:'), nl,
 	list_connections(Place).
 
@@ -251,7 +268,11 @@ is_contained_in(T1,T2) :-
 	location(X,T2),
 	is_contained_in(T1,X).
 
-
+is_contained_in_s(T1,T2) :-
+	location_s(object(T1, _, _, _), T2).
+is_contained_in_s(T1,T2) :-
+	location_s(object(X, _, _, _), T2),
+	is_contained_in_s(T1,X).
 
 %%% ASK END %%%
 
