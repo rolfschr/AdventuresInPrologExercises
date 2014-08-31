@@ -19,6 +19,12 @@ location(envelope, desk).
 location(stamp, envelope).
 location(key, envelope).
 
+:- dynamic location_s/2.
+location_s(object(candle, red, small, 1), kitchen).
+location_s(object(apple, red, small, 1), kitchen).
+location_s(object(apple, green, small, 1), kitchen).
+location_s(object(table, blue, big, 50), kitchen).
+
 :- dynamic door/3.
 % door(From, To, IsOpen)
 door(office, hall, true).
@@ -118,12 +124,23 @@ take(X):-
 	can_take(X),
 	take_object(X).
 
+take_s(X):-
+	can_take_s(X),
+	take_object(X).
+
 can_take(Thing) :-
 	here(Place),
 	is_contained_in(Thing, Place).
 can_take(Thing) :-
-	format('There is no ~w here.', [Thing]),
-	nl, fail.
+	format('There is no ~w here.~n', [Thing]),
+	fail.
+
+can_take_s(Thing) :-
+	here(Room),
+	location_s(object(Thing, _, small,_), Room).
+can_take_s(Thing) :-
+	format('~w is too big.~n', [Thing]),
+	fail.
 
 take_object(X):-
 	retract(location(X,_)),
